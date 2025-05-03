@@ -48,8 +48,11 @@ class MQTTController:
     def publish_data(self, data: Dict[str, Any]) -> None:
         data["tele"]["packet_count"] = self._get_next_packet_count()
         json_data = json.dumps(data, indent=4)
-        self.client.publish("sensors" + "/" + config.MQTT_BASE_TOPIC + "/" + config.NODE_ID, json_data, qos=2)
-        #print("mqtt publish: ", data)
+        try:
+            self.client.publish("sensors" + "/" + config.MQTT_BASE_TOPIC + "/" + config.NODE_ID, json_data, qos=2)
+            print("mqtt publish: ", data)
+        except Exception as e:
+            print("could not push to mqtt: ", e)
 
     def stop(self) -> None:
         self.client.loop_stop()
