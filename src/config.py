@@ -29,6 +29,7 @@ try:
     MQTT_USE_TLS = os.environ['MQTT_USE_TLS'] in 'True'
     MQTT_USER = os.environ['MQTT_USER']
     MQTT_PASS = os.environ['MQTT_PASS']
+    MQTT_PUBLISH_EVERY_SECOND = os.environ['MQTT_PUBLISH_EVERY_SECOND'] in 'True'
 
     # GPS settings
     GPS_POLL_ENABLE = os.environ['GPS_POLL_ENABLE'] in 'True'
@@ -40,6 +41,7 @@ try:
     HEATER_DEBUG = os.environ['HEATER_DEBUG'] in 'True'  # Enable heater debug messages
     HEATER_PID_TEMP_TUNING = literal_eval(os.environ.get("HEATER_PID_TEMP_TUNING"))
     HEATER_MIN_TEMP = int(os.environ['HEATER_MIN_TEMP'])  # Minimum temperature to always keep, even below 50% ambient humidity. Keeps Electronics warm and dry (-100) to disable
+    HEATER_MAX_POWER = int(os.environ['HEATER_MAX_POWER'])  # Maximum power in % the heater pid is allowed to use, 100% -> no restrictions
 
 
     HEATER_PID_AUTOTUNER_ENABLE = os.environ['HEATER_PID_AUTOTUNER_ENABLE'] in 'True'  # This runs a PID Autotuning sequence if enabled, disable this for normal operation
