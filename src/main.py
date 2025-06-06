@@ -133,10 +133,7 @@ def generate_publishing_message(mean_data: Dict[str, float]) -> Dict[str, Any]:
     alt_buffer = mean_data.pop("alt", 0)
     rssi_buffer = mean_data.pop("rssi", 0)
     # now there is only averaged sensor data in mean_data
-    ret = {
-        "node_id": config.NODE_ID,
-        "data": mean_data,
-        "tele": {
+    telemetries = {
             "heater": heater_buffer,
             "lat": lat_buffer,
             "lon": lon_buffer,
@@ -153,9 +150,13 @@ def generate_publishing_message(mean_data: Dict[str, float]) -> Dict[str, Any]:
             "logger_state": logg.get_logger_state(),
             "logger_queue": logg.get_logger_queue_size(),
             "rsync_runtime": logg.get_last_rsync_runtime(),
-        },
+        }
+    node = {
+        "node_id": config.NODE_ID,
     }
-    return append_timestamps_to(ret)
+
+    merged_dicts = mean_data | telemetries | node
+    return append_timestamps_to(merged_dicts)
 
 
 def remove_raw_data_from(data: Dict[str, Any]) -> Dict[str, Any]:
