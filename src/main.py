@@ -153,10 +153,16 @@ def generate_publishing_message(mean_data: Dict[str, float]) -> Dict[str, Any]:
         }
     node = {
         "node_id": config.NODE_ID,
+        "mqtt_base_topic": config.MQTT_BASE_TOPIC,
     }
 
     merged_dicts = mean_data | telemetries | node
     return append_timestamps_to(merged_dicts)
+
+
+def remove_gas_data_from(data: Dict[str, Any]) -> Dict[str, Any]:
+    gas_keys = {"NO", "NO2", "CO", "O3"}
+    return {key: val for key, val in data.items() if key not in gas_keys}
 
 
 def remove_raw_data_from(data: Dict[str, Any]) -> Dict[str, Any]:
@@ -188,9 +194,9 @@ def every_second() -> None:
     if not config.MQTT_PUBLISH_EVERY_SECOND:
         return
     if config.PUBLISH_RAW_OPC_AND_ADC:
-        mqtt.publish_data(generate_publishing_message(remove_none_from(second_data)))
+        mqtt.publish_data(generate_publishing_message(remove_gas_data_from(remove_none_from(second_data))))
     else:
-        mqtt.publish_data(generate_publishing_message(remove_raw_data_from(second_data)))
+        mqtt.publish_data(generate_publishing_message(remove_gas_data_from(remove_raw_data_from(second_data))))
 
 
 def every_minute() -> None:
@@ -208,9 +214,9 @@ def every_minute() -> None:
     if config.MQTT_PUBLISH_EVERY_SECOND:
         return
     if config.PUBLISH_RAW_OPC_AND_ADC:
-        mqtt.publish_data(generate_publishing_message(avg_data))
+        mqtt.publish_data(generate_publishing_message(remove_gas_data_from(remove_none_from(avg_data))))
     else:
-        mqtt.publish_data(generate_publishing_message(remove_raw_data_from(avg_data)))
+        mqtt.publish_data(generate_publishing_message(remove_gas_data_from(remove_raw_data_from(avg_data))))
 
 
 def exit_handler(signum: int, _frame: Optional[FrameType]) -> None:
