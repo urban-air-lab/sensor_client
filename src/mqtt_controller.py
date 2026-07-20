@@ -46,6 +46,8 @@ class MQTTController:
         self.mqtt_connected = False
 
     def publish_data(self, data: Dict[str, Any]) -> None:
+        if "tele" not in data:
+            data["tele"] = {}
         data["tele"]["packet_count"] = self._get_next_packet_count()
         json_data = json.dumps(data, indent=4)
         try:
