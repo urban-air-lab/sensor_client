@@ -118,13 +118,12 @@ class HeatingController:
         :param duty_cycle: Heizleistung in Prozent (0–100), Standard: 50%
         """
         if enable:
-            duty_cycle = 50
+            duty_cycle = float(np.clip(duty_cycle, 0, 100))  # Parameter wirklich nutzen
             self.p.ChangeDutyCycle(duty_cycle)
             print(f"Heater force ON: {duty_cycle}% duty cycle")
         else:
             self.p.ChangeDutyCycle(0)
             print("Heater force OFF")
-
 
     def stop(self) -> None:
         self.p.ChangeDutyCycle(0)

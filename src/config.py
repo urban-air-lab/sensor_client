@@ -39,6 +39,7 @@ try:
     # HARDWARE SETTINGS
     HEATER_ENABLE = os.environ['HEATER_ENABLE'] in 'True'  # This should only be enabled if an opc is used
     HEATER_FORCE_ENABLE = os.environ.get('HEATER_FORCE_ENABLE') in 'True'
+    HEATER_FORCE_DUTY_CYCLE = float(os.environ.get('HEATER_FORCE_DUTY_CYCLE', '50'))
     HEATER_PIN = int(os.environ['HEATER_PIN'])
     HEATER_DEBUG = os.environ['HEATER_DEBUG'] in 'True'  # Enable heater debug messages
     HEATER_PID_TEMP_TUNING = literal_eval(os.environ.get("HEATER_PID_TEMP_TUNING"))
