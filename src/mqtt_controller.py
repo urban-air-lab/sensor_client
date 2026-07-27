@@ -52,7 +52,8 @@ class MQTTController:
         json_data = json.dumps(data, indent=4)
         try:
             self.client.publish(config.MQTT_BASE_TOPIC + "/" + config.NODE_ID, json_data, qos=2)
-            print("mqtt publish: ", data)
+            if config.MQTT_DEBUG:
+                print("mqtt publish: ", data)
         except Exception as e:
             print("could not push to mqtt: ", e)
 

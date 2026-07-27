@@ -30,6 +30,7 @@ try:
     MQTT_USER = os.environ['MQTT_USER']
     MQTT_PASS = os.environ['MQTT_PASS']
     MQTT_PUBLISH_EVERY_SECOND = os.environ['MQTT_PUBLISH_EVERY_SECOND'] in 'True'
+    MQTT_DEBUG = os.environ.get('MQTT_DEBUG') in 'True' # Enable MQTT debug messages
 
     # GPS settings
     GPS_POLL_ENABLE = os.environ['GPS_POLL_ENABLE'] in 'True'
