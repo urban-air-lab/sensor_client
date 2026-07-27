@@ -185,7 +185,8 @@ def every_second() -> None:
     second_data = get_all_data()
     minute_data.append(second_data)
     if config.HEATER_ENABLE:
-        heat.update_heating(second_data)
+        if not config.HEATER_FORCE_ENABLE:
+            heat.update_heating(second_data)
     if config.OLED_ENABLE and config.OLED_RAW:
         update_oled_display(second_data)
     if config.LOGGING_RAW_ENABLE:
