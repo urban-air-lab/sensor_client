@@ -99,9 +99,9 @@ class InternetWatchdog:
         (inkl. USB-Stick) → vorher sauber unmounten, danach wieder mounten.
         """
         self._unmount_usb_stick()
-        self._uhubctl_power("off")
-        time.sleep(5)   # Modem muss komplett stromlos werden
-        self._uhubctl_power("on")
+
+        self._uhubctl_power_cycle()
+
         time.sleep(15)  # Zeit für USB-Enumeration und Modem-Init
         self._mount_usb_stick()
 
@@ -114,20 +114,20 @@ class InternetWatchdog:
             time.sleep(5)
         print("WARNING: Modem not detected after USB power cycle!")
 
-    def _uhubctl_power(self, action: str) -> None:
-        """Schaltet alle USB-Ports des Pi via uhubctl ein oder aus.
-        -l 1-1 = Haupt-Hub, -p 2 = Kontrollport (ganged → alle Ports betroffen)
-        """
+
+    def _uhubctl_power_cycle(self) -> None:
+        """Schaltet USB kurz aus und wieder ein in einem einzigen Aufruf."""
         try:
             result = subprocess.run(
-                ["uhubctl", "-l", "1-1", "-p", "2", "-a", action],
+                ["uhubctl", "-l", "1-1", "-p", "2", "-a", "cycle", "--delay", "60000"],
                 capture_output=True, text=True
             )
-            print(f"uhubctl {action}: {result.stdout.strip()}")
+            print(f"uhubctl cycle: {result.stdout.strip()}")
         except FileNotFoundError:
-            print("ERROR: uhubctl not found! Install with: apt-get install uhubctl")
+            print("ERROR: uhubctl not found!")
         except Exception as e:
-            print(f"uhubctl {action} failed: {e}")
+            print(f"uhubctl cycle failed: {e}")
+
 
     def _unmount_usb_stick(self) -> None:
         """Unmountet den USB-Stick sauber bevor der USB-Bus abgeschaltet wird."""
