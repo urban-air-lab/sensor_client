@@ -60,7 +60,11 @@ if config.OLED_ENABLE:
     oled = OLEDController()
 # This watchdog keeps the internet connection alive by restarting the modem
 if config.INTERNET_WATCHDOG_ENABLE:
-    watchdog = InternetWatchdog(interval=config.INTERNET_WATCHDOG_INTERVAL, modem_handler_instance=modem)
+    watchdog = InternetWatchdog(
+        interval=config.INTERNET_WATCHDOG_INTERVAL,
+        modem_handler_instance=modem,
+        logging_controller_instance=logg,
+    )
 
 
 ### SENSOR INIT ###
