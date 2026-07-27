@@ -120,10 +120,10 @@ class HeatingController:
         if enable:
             duty_cycle = float(np.clip(duty_cycle, 0, 100))  # Parameter wirklich nutzen
             self.p.ChangeDutyCycle(duty_cycle)
-            print(f"Heater force ON: {duty_cycle}% duty cycle")
+            # print(f"Heater force ON: {duty_cycle}% duty cycle")
         else:
             self.p.ChangeDutyCycle(0)
-            print("Heater force OFF")
+            # print("Heater force OFF")
 
     def stop(self) -> None:
         self.p.ChangeDutyCycle(0)
