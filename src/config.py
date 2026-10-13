@@ -30,6 +30,7 @@ try:
     MQTT_USER = os.environ['MQTT_USER']
     MQTT_PASS = os.environ['MQTT_PASS']
     MQTT_PUBLISH_EVERY_SECOND = os.environ['MQTT_PUBLISH_EVERY_SECOND'] in 'True'
+    MQTT_DEBUG = os.environ.get('MQTT_DEBUG') in 'True' # Enable MQTT debug messages
 
     # GPS settings
     GPS_POLL_ENABLE = os.environ['GPS_POLL_ENABLE'] in 'True'
@@ -37,6 +38,8 @@ try:
 
     # HARDWARE SETTINGS
     HEATER_ENABLE = os.environ['HEATER_ENABLE'] in 'True'  # This should only be enabled if an opc is used
+    HEATER_FORCE_ENABLE = os.environ.get('HEATER_FORCE_ENABLE') in 'True'
+    HEATER_FORCE_DUTY_CYCLE = float(os.environ.get('HEATER_FORCE_DUTY_CYCLE', '50'))
     HEATER_PIN = int(os.environ['HEATER_PIN'])
     HEATER_DEBUG = os.environ['HEATER_DEBUG'] in 'True'  # Enable heater debug messages
     HEATER_PID_TEMP_TUNING = literal_eval(os.environ.get("HEATER_PID_TEMP_TUNING"))

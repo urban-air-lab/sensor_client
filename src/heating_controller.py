@@ -109,6 +109,21 @@ class HeatingController:
             self.pid_t.auto_mode = False
         return power
 
+    def set_heater_force(self, enable: bool, duty_cycle: float = 50.0) -> None:
+        """
+        Schaltet die Heizung manuell mit einem fixen Duty Cycle ein oder aus.
+        Umgeht den PID-Regler komplett.
+
+        :param enable: True = Heizung an, False = Heizung aus
+        :param duty_cycle: Heizleistung in Prozent (0–100), Standard: 50%
+        """
+        if enable:
+            duty_cycle = float(np.clip(duty_cycle, 0, 100))  # Parameter wirklich nutzen
+            self.p.ChangeDutyCycle(duty_cycle)
+            # print(f"Heater force ON: {duty_cycle}% duty cycle")
+        else:
+            self.p.ChangeDutyCycle(0)
+            # print("Heater force OFF")
 
     def stop(self) -> None:
         self.p.ChangeDutyCycle(0)
