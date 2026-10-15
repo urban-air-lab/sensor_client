@@ -88,13 +88,13 @@ class HeatingController:
 
     def _calculate_dehumidification_temperature(self, outside_humidity: float) -> float:
         # constrain HEATER_MIN_TEMP to a safe range (was: max 22)
-        min_temperature = int(np.clip(config.HEATER_MIN_TEMP, -100, 45))
+        min_temperature = int(np.clip(config.HEATER_MIN_TEMP, -100, 40))
         setpoint_temperature = min_temperature
         if outside_humidity >= 50:
             # Use Setpoint Temp Polynomial
             poly_temperature = 0.0084 * outside_humidity * outside_humidity - 0.73 * outside_humidity + 37.653
             # Constrain to 0 to 50 °C range
-            poly_temperature = round(np.clip(poly_temperature, 0, 45), 1)
+            poly_temperature = round(np.clip(poly_temperature, 0, 40), 1)
             # Never go below the configured minimum temperature
             setpoint_temperature = max(poly_temperature, min_temperature)
         return setpoint_temperature
